@@ -1,18 +1,18 @@
-#folder_move
-import os #파일명, 폴더명 정보를 읽어오기 위한 모듈
-import shutil #파일 이동을 위한 모듈
+# File Move
 
-#파일명을 읽어와서 파일명의 분류 부분을 중복없이 리스트화
+import os
+import shutil
+
+# Read file name and Listing classification part
 def fileList(path_before : str)->list :
-    file_list = os.listdir(path_before) #폴더의 파일명을 리스트화
-    category = [] #분류 데이터 저장을 위해 빈 리스트 생성
+    file_list = os.listdir(path_before) #Listing file name list
+    category = [] #Make empty list to save file name list
     for file in file_list:
-        temp_list = file.split("_") #파일명중 "_"로 분리하여 리스트화
+        temp_list = file.split("_") #Separate the file names with "_" and list them
         category.append(temp_list[0]) #리스트의 -2 인덱싱 데이터를 category에 추가
 
     temp_set = set(category) #중복을 제거하기 위해 set 사용
     result = list(temp_set) #중복 제거 후 다시 리스트화
-    print(result)
     return result #결과 리턴
 
 
@@ -35,8 +35,6 @@ def moveFile(path_before, path_after):
     for file in filelist:
         temp_list = file.split("_")
         dict[file]=temp_list[0]
-     
-    print(dict)
     
     #딕셔너리 정보 활용하여 파일 이동
     for key, value in dict.items():
@@ -47,7 +45,8 @@ def moveFile(path_before, path_after):
             pass
     
     
-if __name__ == "__main__" :
+# if __name__ == "__main__" :
+def classify_files():
     #분류할 파일이 있는 위치 폴더
     path_before = r"Z:\03.고유\001.Ops\삼성증권 TRS01 거래\07. Test"
     file_list = fileList(path_before)
