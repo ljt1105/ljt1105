@@ -33,12 +33,12 @@ def copy_files():
             shutil.copy(open_position+"/"+file, tradeblotter_rsv+"/"+file)
     print("Open position file copy completed")
 
-    # for file in new_transaction_files:
-    #     if 'xlsx' in file:
-    #         shutil.copy(new_transaction+"/"+file, data_reservoir+"/"+file)
-    #         shutil.copy(new_transaction+"/"+file, new_transaction_rsv+"/"+file)
-    #         shutil.copy(new_transaction+"/"+file, tradeblotter_rsv+"/"+file)
-    # print("New trasaction file copy completed")
+    for file in new_transaction_files:
+        if 'xlsx' in file:
+            shutil.copy(new_transaction+"/"+file, data_reservoir+"/"+file)
+            shutil.copy(new_transaction+"/"+file, new_transaction_rsv+"/"+file)
+            shutil.copy(new_transaction+"/"+file, tradeblotter_rsv+"/"+file)
+    print("New trasaction file copy completed")
 
     for file in unwind_transaction_files:
         if 'xlsx' in file:
@@ -47,8 +47,8 @@ def copy_files():
             shutil.copy(unwind_transaction+"/"+file, tradeblotter_rsv+"/"+file)
     print("Unwind transaction file copy completed")
 
-    # for file in mid_settle_transaction_files:
-    #     if 'xlsx' in file:
-    #         shutil.copy(mid_settle_transaction+"/"+file, data_reservoir+"/"+file)
-    #         shutil.copy(mid_settle_transaction+"/"+file, tradeblotter_rsv+"/"+file)
-    # print("Mid settle transaction file copy completed")
+    for file in mid_settle_transaction_files:
+        if 'xlsx' in file:
+            shutil.copy(mid_settle_transaction+"/"+file, data_reservoir+"/"+file)
+            shutil.copy(mid_settle_transaction+"/"+file, tradeblotter_rsv+"/"+file)
+    print("Mid settle transaction file copy completed")
