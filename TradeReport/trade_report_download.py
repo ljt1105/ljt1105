@@ -1,3 +1,4 @@
+from apscheduler.schedulers.blocking import BlockingScheduler
 from pathlib import Path
 import os
 import win32com.client
@@ -98,9 +99,25 @@ def miraeasset_trade_report_download():
     print("MiraeAsset Trade report download complete")
 
 
-if __name__=="__main__":
+# def trade_report_download():
+if __name__ == "__main__":
+    print("======================================")
     kb_pbs_trade_report_download()
+    print("======================================")
     nh_trade_report_download()
+    print("======================================")
     kis_trade_report_download()
+    print("======================================")
     yuanta_trade_report_download()
+    print("======================================")
     miraeasset_trade_report_download()
+    print("======================================")
+
+# if __name__ == "__main__":
+
+#     scheduler = BlockingScheduler()
+
+#     scheduler.add_job(trade_report_download, "cron", day_of_week="mon-fri", hour="17", minute=30)
+
+#     print("Trade report download scheduler executed")
+#     scheduler.start()
