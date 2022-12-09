@@ -78,6 +78,7 @@ def yuanta_trade_report_download():
 
     print("Yuanta Trade report download complete")
 
+
 def miraeasset_trade_report_download():
     output_dir = Path("Z:/02.펀드/003.매매보고서 대사/MiraeAsset")
     output_dir.mkdir(parents=True, exist_ok=True)
