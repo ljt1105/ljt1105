@@ -42,11 +42,29 @@ def nh_trade_report_download():
     print("NH Trade report download complete")
 
 
+def kis_pbs_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/KIS-PBS")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("KIS-PBS")
+    messages = inbox.Items
+
+    for message in messages:
+        attachments = message.Attachments
+
+        target_folder = output_dir
+        target_folder.mkdir(parents=True, exist_ok=True)
+
+        for attachment in attachments:
+            attachment.SaveAsFile(target_folder / str(attachment))
+
+    print("KIS-PBS Trade report download complete")
+
 def kis_trade_report_download():
     output_dir = Path("Z:/02.펀드/003.매매보고서 대사/KIS")
     output_dir.mkdir(parents=True, exist_ok=True)
     outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
-    inbox = outlook.GetDefaultFolder(6).Folders("KIS-PBS")
+    inbox = outlook.GetDefaultFolder(6).Folders("KIS")
     messages = inbox.Items
 
     for message in messages:
@@ -105,6 +123,8 @@ if __name__ == "__main__":
     kb_pbs_trade_report_download()
     print("======================================")
     nh_trade_report_download()
+    print("======================================")
+    kis_pbs_trade_report_download()
     print("======================================")
     kis_trade_report_download()
     print("======================================") 
