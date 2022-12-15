@@ -26,7 +26,7 @@ def copy_files():
     data_reservoir = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/01. 삼성 Trade Confirmation"
     open_position_rsv = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/01. 삼성 Trade Confirmation/잔고보고서_(2021.12.10.~)"
     new_transaction_rsv = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/01. 삼성 Trade Confirmation/신규거래"
-    unwind_transaction_rsv = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/01. 삼성 Trade Confirmation/청산거래"
+    unwind_transaction_rsv = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/01. 삼성 Trade Confirmation/청산거래_(2021.12.10.~)"
     margin_report_rsv = r"Z:/03.고유/001.Ops/삼성증권 TRS01 거래/04. [삼성] Margin Report"
 
     tradeblotter_rsv = r"C:/Users/jtlee/PycharmProjects/grunt/settlements/resources/input"
