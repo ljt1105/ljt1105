@@ -75,9 +75,9 @@ def copy_files():
         if 'xlsx' in file:
             shutil.copy(cash_dividend+"/"+file, data_reservoir+"/"+file)
             shutil.copy(cash_dividend+"/"+file, tradeblotter_rsv+"/"+file)
-    print("cash dividend file copy completed")
+    print("Cash dividend file copy completed")
     
     for file in margin_report_files:
         if 'pdf' in file:
             shutil.copy(margin_report+"/"+file, margin_report_rsv+"/"+file)
-    print("margin report file copy completed")
+    print("Margin report file copy completed")
