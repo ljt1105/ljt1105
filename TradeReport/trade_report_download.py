@@ -36,13 +36,18 @@ def nh_trade_report_download():
     messages = inbox.Items
 
     for message in messages:
-        attachments = message.Attachments
+        if message.Unread:
 
-        target_folder = output_dir
-        target_folder.mkdir(parents=True, exist_ok=True)
+            attachments = message.Attachments
 
-        for attachment in attachments:
-            attachment.SaveAsFile(target_folder / str(attachment))
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
 
     print("NH Trade report download complete")
 
@@ -55,13 +60,18 @@ def kis_pbs_trade_report_download():
     messages = inbox.Items
 
     for message in messages:
-        attachments = message.Attachments
+        if message.Unread:
 
-        target_folder = output_dir
-        target_folder.mkdir(parents=True, exist_ok=True)
+            attachments = message.Attachments
 
-        for attachment in attachments:
-            attachment.SaveAsFile(target_folder / str(attachment))
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
 
     print("KIS-PBS Trade report download complete")
 
@@ -73,13 +83,18 @@ def kis_trade_report_download():
     messages = inbox.Items
 
     for message in messages:
-        attachments = message.Attachments
+        if message.Unread:
 
-        target_folder = output_dir
-        target_folder.mkdir(parents=True, exist_ok=True)
+            attachments = message.Attachments
 
-        for attachment in attachments:
-            attachment.SaveAsFile(target_folder / str(attachment))
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
 
     print("KIS Trade report download complete")
 
@@ -116,13 +131,18 @@ def miraeasset_trade_report_download():
     messages = inbox.Items
 
     for message in messages:
-        attachments = message.Attachments
+        if message.Unread:
 
-        target_folder = output_dir
-        target_folder.mkdir(parents=True, exist_ok=True)
+            attachments = message.Attachments
 
-        for attachment in attachments:
-            attachment.SaveAsFile(target_folder / str(attachment))
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
 
     print("MiraeAsset Trade report download complete")
 
