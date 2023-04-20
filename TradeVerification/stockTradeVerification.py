@@ -5,8 +5,8 @@ from tabulate import tabulate
 
 
 # 파일 읽어들이기
-oms_df = pd.read_excel("C:/PythonProjects/data/20230302_oms.xls", )
-trader_df = pd.read_excel("C:/PythonProjects/data/3월2일 거래.xlsx", )
+oms_df = pd.read_excel("C:/PythonProjects/data/20230329_oms.xls", )
+trader_df = pd.read_excel("C:/PythonProjects/data/3월29일 거래.xlsx", )
 
 oms_df1 = oms_df[["종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 
@@ -91,5 +91,6 @@ result_df[['체결단가']] = oms_df3[['체결단가']] - trader_df3[['체결단
 result_df[['체결금액']] = oms_df3[['체결금액']] - trader_df3[['체결금액']]
 
 result_df[['종목명', '매매구분', '체결단가', '체결수량', '체결금액']]
-
-print(tabulate(result_df.head(), headers = 'keys', tablefmt = 'pretty'))
+print(tabulate(oms_df3, headers = 'keys', tablefmt = 'pretty'))
+print(tabulate(trader_df3, headers = 'keys', tablefmt = 'pretty'))
+print(tabulate(result_df, headers = 'keys', tablefmt = 'pretty'))

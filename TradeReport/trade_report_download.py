@@ -147,21 +147,47 @@ def miraeasset_trade_report_download():
     print("MiraeAsset Trade report download complete")
 
 
+def hsbc_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/HSBC")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("HSBC")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+    print("HSBC Trade report download complete")
+
+
 # def trade_report_download():
 if __name__ == "__main__":
-    print("======================================")
+    print("===================================================")
     kb_pbs_trade_report_download()
-    print("======================================")
+    print("===================================================")
     nh_trade_report_download()
-    print("======================================")
+    print("===================================================")
     kis_pbs_trade_report_download()
-    print("======================================")
+    print("===================================================")
     kis_trade_report_download()
-    print("======================================") 
+    print("===================================================")
     yuanta_trade_report_download()
-    print("======================================")
+    print("===================================================")
     miraeasset_trade_report_download()
-    print("======================================")
+    print("===================================================")
+    hsbc_trade_report_download()
+    print("===================================================")
 
 # if __name__ == "__main__":
 
