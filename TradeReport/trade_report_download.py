@@ -171,7 +171,7 @@ def hsbc_trade_report_download():
     print("HSBC Trade report download complete")
 
 
-def Eugene_trade_report_download():
+def eugene_trade_report_download():
     output_dir = Path("Z:/02.펀드/003.매매보고서 대사/Eugene")
     output_dir.mkdir(parents=True, exist_ok=True)
     outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
@@ -195,6 +195,30 @@ def Eugene_trade_report_download():
     print("Eugene Trade report download complete")
 
 
+def jpm_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/J.P.Morgan")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("J.P.Morgan")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+    print("JPM Trade report download complete")
+
+
 # def trade_report_download():
 if __name__ == "__main__":
     print("===================================================")
@@ -212,7 +236,7 @@ if __name__ == "__main__":
     print("===================================================")
     hsbc_trade_report_download()
     print("===================================================")
-    Eugene_trade_report_download()
+    eugene_trade_report_download()
     print("===================================================")
 
 # if __name__ == "__main__":

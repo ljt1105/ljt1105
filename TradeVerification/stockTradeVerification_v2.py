@@ -46,7 +46,7 @@ trader_df1 = trader_df1.dropna()
 
 
 
-trader_df2 = trader_df1.set_index('펀드', '종목명', '매매구분')
+trader_df2 = trader_df1.set_index(['펀드', '종목명', '매매구분'])
 
 trader_df3 = trader_df2.groupby(['펀드', '종목명', '매매구분']).agg({'체결수량': 'sum', '체결단가': 'mean', '체결금액': 'sum'})
 
