@@ -5,8 +5,8 @@ from tabulate import tabulate
 
 
 # 파일 읽어들이기
-oms_df = pd.read_excel("C:/PythonProjects/data/20230425_oms.xls", )
-trader_df = pd.read_excel("C:/PythonProjects/data/4월25일 거래.xlsx", )
+oms_df = pd.read_excel("C:/PythonProjects/data/20230426_oms.xls", )
+trader_df = pd.read_excel("C:/PythonProjects/data/4월26일 거래.xlsx", )
 
 oms_df1 = oms_df[["펀드", "종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 
