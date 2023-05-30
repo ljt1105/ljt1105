@@ -1,12 +1,10 @@
-# 라이브러리 import
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
 
 
-# 파일 읽어들이기
-oms_df = pd.read_excel("C:/PythonProjects/data/20230426_oms.xls", )
-trader_df = pd.read_excel("C:/PythonProjects/data/4월26일 거래.xlsx", )
+oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/20230530_oms.xls", )
+trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/5월30일 거래.xlsx", )
 
 oms_df1 = oms_df[["펀드", "종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 
@@ -16,7 +14,6 @@ oms_df1["매매구분"] = oms_df1["매매구분"].replace(['일반_매수', '일
 
 oms_df1 = oms_df1.drop(oms_df1.columns[[2]], axis=1)
 
-oms_df1 = oms_df1.replace(1, np.nan)
 oms_df1 = oms_df1.dropna()
 
 col_to_move = oms_df1.pop('매매구분')
