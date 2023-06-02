@@ -3,8 +3,8 @@ import pandas as pd
 from tabulate import tabulate
 
 
-oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/20230530_oms.xls", )
-trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/5월30일 거래.xlsx", )
+oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/20230601_oms.xls", )
+trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/6월1일 거래.xlsx", )
 
 oms_df1 = oms_df[["펀드", "종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 

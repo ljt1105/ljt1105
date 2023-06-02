@@ -219,6 +219,54 @@ def jpm_trade_report_download():
     print("JPM Trade report download complete")
 
 
+def clsa_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/CLSA")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("CLSA")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+    print("CLSA Trade report download complete")
+
+
+def GoldmanSachs_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/GoldmanSachs")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("GoldmanSachs")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+    print("GoldmanSachs Trade report download complete")
+
+
 # def trade_report_download():
 if __name__ == "__main__":
     print("===================================================")
