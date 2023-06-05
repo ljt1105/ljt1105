@@ -1,10 +1,23 @@
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
+import datetime
 
 
-oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/20230601_oms.xls", )
-trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/6월1일 거래.xlsx", )
+# 현재 날짜 가져오기
+current_date = datetime.datetime.now()
+
+# yyyymmdd 형식으로 변환
+td = current_date.strftime("%Y%m%d")
+td_tr1 = current_date.strftime("%m월").lstrip("0")
+td_tr2 = current_date.strftime("%d일").lstrip("0")
+td_tr = td_tr1 + td_tr2
+
+print("Today : " + td)
+
+
+oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/" + td + "_oms.xls", )
+trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/" + td_tr + " 거래.xlsx", )
 
 oms_df1 = oms_df[["펀드", "종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 
@@ -95,3 +108,5 @@ result_df[['체결단가']] = oms_df4[['체결단가']] - trader_df3[['체결단
 result_df[['체결금액']] = oms_df4[['체결금액']] - trader_df3[['체결금액']]
 
 print(tabulate(result_df, headers = 'keys', tablefmt = 'pretty'))
+
+result_df.to_excel('Z:/02.펀드/019. 일간매매내역/recon_result/' + td + "_recon_result.xlsx", index=True)
