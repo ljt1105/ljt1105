@@ -7,6 +7,9 @@ def refine_df(oms_df, trader_df, td):
 
     oms_df1 = oms_df[["펀드", "종목명", "매매유형", "매매구분", "체결수량", "체결단가", "체결금액"]]
 
+    oms_df1["매매유형"] = oms_df1["매매유형"].astype(str)
+    oms_df1["매매구분"] = oms_df1["매매구분"].astype(str)
+
     oms_df1["매매구분"] = oms_df1[["매매유형", "매매구분"]].agg('_'.join, axis=1)
 
     oms_df1["매매구분"] = oms_df1["매매구분"].replace(['일반_매수', '일반_매도', '차입_매수', '차입_매도'], ['Buy', 'Sell', 'Buy cover', 'Short sell'])
