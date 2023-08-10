@@ -20,7 +20,7 @@ def SBL_report_download():
 
     for message in messages:
         if message.Unread:
-            subject = re.sub(r'[:<>]', '_', message.Subject)
+            subject = re.sub(r'[:<>]', '_', message.Subject) 
             received_date = message.ReceivedTime
             timestamp = received_date.strftime("%Y%m%d_%H%M%S")
             new_subject = f"{subject}_{timestamp}"
@@ -28,7 +28,7 @@ def SBL_report_download():
             message.SaveAs(output_dir / f"{new_subject}.msg")
             message.Unread = False
 
-    print("SBL report download complete")
+    print("SBL report download completed")
 
 
 SBL_report_download()
