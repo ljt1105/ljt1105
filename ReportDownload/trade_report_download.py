@@ -5,6 +5,22 @@ import win32com.client
 import datetime
 import time
 import schedule
+import zipfile
+import move_files
+
+def extract_attachments(output_dir, attachments):
+    for attachment in attachments:
+        attachment_name = str(attachment)
+        attachment_path = output_dir / attachment_name
+
+        if attachment_name.lower().endswith('.zip'):
+            # 첨부 파일이 .zip 형식인 경우 압축을 풉니다.
+            with zipfile.ZipFile(attachment_path, 'r') as zip_ref:
+                zip_ref.extractall(output_dir)
+            # os.remove(attachment_path)  # 압축 파일은 삭제할 수도 있습니다.
+        else:
+            # .zip이 아닌 경우 무시
+            continue
 
 
 def kb_pbs_trade_report_download():
@@ -270,6 +286,83 @@ def GoldmanSachs_trade_report_download():
     print("GoldmanSachs Trade report download complete")
 
 
+def hmc_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/HMC")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("HMC")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+    print("HMC Trade report download complete")
+
+
+def kb_swap_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/KB-SWAP")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("KB-SWAP")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            # 압축해제 함수 호출
+            extract_attachments(output_dir, attachments)
+
+    print("KB-SWAP report download complete")
+
+
+def kis_swap_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/KIS-SWAP")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("KIS-SWAP")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("KIS-SWAP report download complete")
+
+
 # def trade_report_download():
 if __name__ == "__main__":
     print("===================================================")
@@ -295,7 +388,12 @@ if __name__ == "__main__":
     print("===================================================")
     GoldmanSachs_trade_report_download()
     print("===================================================")
-
+    hmc_trade_report_download()
+    print("===================================================")
+    kb_swap_trade_report_download()
+    print("===================================================")
+    kis_swap_trade_report_download()
+    print("===================================================")
 
 
 
