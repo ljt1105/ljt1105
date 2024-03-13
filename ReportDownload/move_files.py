@@ -18,7 +18,7 @@ def move_files_with_keyword2(source_dir, target_dir, keyword):
     # 소스 디렉토리 내의 모든 파일을 검색합니다.
     for filename in os.listdir(source_dir):
         source_file = os.path.join(source_dir, filename)
-
+ 
         # 파일 이름에 특정 키워드 포함되어 있으면 이동
         if keyword in filename and "Summary" not in filename: # 끝에 .txt가 붙은 파일 제외
             target_file = os.path.join(target_dir, filename)
