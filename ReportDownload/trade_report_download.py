@@ -362,6 +362,56 @@ def kis_swap_trade_report_download():
 
     print("KIS-SWAP report download complete")
 
+def CIMB_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/CGS-CIMB")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("CGS-CIMB")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("CGS-CIMB report download complete")
+
+def MacQuarie_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/MacQuarie")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("MacQuarie")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("MacQuarie report download complete")
+
 
 # def trade_report_download():
 if __name__ == "__main__":
@@ -394,16 +444,7 @@ if __name__ == "__main__":
     print("===================================================")
     kis_swap_trade_report_download()
     print("===================================================")
-
-
-
-
-
-# if __name__ == "__main__":
-
-#     scheduler = BlockingScheduler()
-
-#     scheduler.add_job(trade_report_download, "cron", day_of_week="mon-fri", hour="17", minute=30)
-
-#     print("Trade report download scheduler executed")
-#     scheduler.start()
+    CIMB_trade_report_download()
+    print("===================================================")
+    MacQuarie_trade_report_download()
+    print("===================================================")
