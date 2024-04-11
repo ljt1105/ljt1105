@@ -87,6 +87,8 @@ previous_position['date'] = pd.to_datetime('2024-01-01')  # 초기 날짜 설정
 # daily_position_df 초기화
 daily_position_df = pd.DataFrame(columns=['date', 'fund_code', 'manager', 'ticker', 'stock_name', 'remained_quantity', 'gross_amount', 'commission', 'tax', 'net_amount'])
 
+# daily_position_df = previous_position.append(['date', 'fund_code', 'manager', 'ticker', 'stock_name', 'quantity', 'gross_amount', 'commission', 'tax'], ignore_index=True)
+
 # 날짜별로 반복하면서 포지션 계산
 for index, row in sum_df.iterrows():
     # 현재 거래 내역 가져오기
