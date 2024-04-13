@@ -70,15 +70,12 @@ sum_df['avg_price'] = sum_df['gross_amount'] / sum_df['quantity']
 # sum_df를 date 순으로 정렬
 sum_df.sort_values(by='date', inplace=True)
 
-# # start_df를 복제하여 미실현 수익이 계산 및 저장될 새로운 데이터프레임 생성
-# pnl_cal_df = start_df.copy()
-
-# # gross_amount 컬럼을 추가하여 복제된 데이터프레임에 할당
-# pnl_cal_df['gross_amount'] = pnl_cal_df['remained_quantity'] * pnl_cal_df['entry_price']
+# 초기 날짜 설정
+initial_date = sum_df['date'].min()
 
 # 이전 포지션 초기화
 previous_position = start_df.copy()
-previous_position['date'] = pd.to_datetime('2024-01-01')  # 초기 날짜 설정
+previous_position['date'] = initial_date  # 초기 날짜 설정
 previous_position['net_amount'] = previous_position['entry_gross_amount'] + previous_position['commission'] + previous_position['tax']
 previous_position['gross_amount'] = previous_position['entry_gross_amount']
 previous_position['remained_amount'] = previous_position['entry_gross_amount']
@@ -89,9 +86,6 @@ daily_position_df = pd.DataFrame(columns=['date', 'fund_code', 'manager', 'ticke
 
 # 초기 포지션 정보를 daily_position_df에 추가
 daily_position_df = pd.concat([daily_position_df, previous_position], ignore_index=False)
-
-# previous_position에도 초기 포지션 정보 추가
-# previous_position = pd.DataFrame(initial_position_info, index=[0])
 
 # 날짜별로 반복하면서 포지션 계산
 for index, row in sum_df.iterrows():
@@ -107,38 +101,48 @@ for index, row in sum_df.iterrows():
     commission = row['commission']
     tax = row['tax']
     
-    # 이전 포지션에서 해당 종목의 이전 정보 가져오기
-    previous_info = previous_position[(previous_position['fund_code'] == fund_code) & (previous_position['ticker'] == ticker) & (previous_position['manager'] == manager)]
+    # 현재 거래일을 Timestamp 객체로 변환
+    # date = pd.to_datetime(row['date'])
 
+    # 이전 포지션에서 해당 종목의 이전 정보 가져오기
+    previous_info = previous_position[(previous_position['fund_code'] == fund_code) & (previous_position['ticker'] == ticker) & 
+                                (previous_position['manager'] == manager) & (previous_position['date'] <= date)]
+
+
+    # 현재 거래일의 이전 정보가 있다면
     if not previous_info.empty:
-        previous_quantity = previous_info.iloc[0]['remained_quantity']
-        previous_gross_amount = previous_info.iloc[0]['gross_amount']
-        previous_commission = previous_info.iloc[0]['commission']
-        previous_tax = previous_info.iloc[0]['tax']
-        previous_remained_amount = previous_info.iloc[0]['remained_amount']
-        # previous_entry_price = previous_info.iloc[0]['entry_price'] # editting
+        # 이전 거래가 있으면 해당 거래에 반영
+        # previous_quantity = previous_info.iloc[0]['remained_quantity']
+        # previous_gross_amount = previous_info.iloc[0]['gross_amount']
+        # previous_commission = previous_info.iloc[0]['commission']
+        # previous_tax = previous_info.iloc[0]['tax']
+        # previous_remained_amount = previous_info.iloc[0]['remained_amount']
+        # 날짜를 기준으로 오름차순으로 정렬
+        previous_info = previous_info.sort_values(by='date')
+        # 최신 거래 정보 가져오기
+        latest_info = previous_info.iloc[-1]
+        previous_quantity = latest_info['remained_quantity']
+        previous_gross_amount = latest_info['gross_amount']
+        previous_commission = latest_info['commission']
+        previous_tax = latest_info['tax']
+        previous_remained_amount = latest_info['remained_amount']
+        avg_price = previous_remained_amount / previous_quantity # editting
     else:
         previous_quantity = 0
         previous_gross_amount = 0
         previous_commission = 0
+        # commission = 0
+        # tax = 0
         previous_tax = 0
         previous_remained_amount = 0
-        # previous_entry_price = 0 # editting
+        avg_price = gross_amount / quantity # editting
 
     # 남은 포지션 계산
     remained_quantity = previous_quantity + quantity
-    remained_amount = previous_remained_amount + gross_amount
-    commission = previous_commission + commission
-    tax = previous_tax + tax
+    remained_amount = previous_remained_amount + (quantity * avg_price)
     net_amount = gross_amount + commission + tax
-    # entry_amount_by_traded_q = previous_entry_price*quantity # editting
-    
-    # 만약 이전 정보가 없다면 새로운 매수량과 금액을 추가해줍니다.
-    if previous_info.empty and direction == 'Buy':
-        previous_quantity = quantity
-        previous_gross_amount = gross_amount
-        remained_quantity = quantity
-        remained_amount = gross_amount
+    principal_amount = avg_price * quantity + commission + tax # editting
+    realized_pnl = principal_amount + net_amount # editting
 
     # 남은 포지션 정보 업데이트
     position_info = {
@@ -154,21 +158,18 @@ for index, row in sum_df.iterrows():
         'traded_amount': gross_amount,
         'commission': commission,
         'tax': tax,
-        'net_traded_amount': net_amount
+        'net_traded_amount': net_amount,
+        'avg_price': avg_price,
+        'principal_amount': principal_amount,
+        'realized_pnl': realized_pnl,
+
     }
     
     # daily_position_df에 추가
-    # daily_position_df = daily_position_df.append(position_info, ignore_index=True)
     daily_position_df = pd.concat([daily_position_df, pd.DataFrame(position_info, index=[0])], ignore_index=True)
     
     # 이전 포지션 업데이트
-    # previous_position = previous_position.append(position_info, ignore_index=True)
     previous_position = pd.concat([previous_position, pd.DataFrame(position_info, index=[0])], ignore_index=True)
-
-
-    # remained_quantity가 0이 되면 해당 행 삭제
-    # if (remained_quantity == 0 & quantity == 0):
-    #     previous_position = previous_position.drop(previous_position[(previous_position['fund_code'] == fund_code) & (previous_position['ticker'] == ticker) & (previous_position['manager'] == manager)].index)
 
 # 날짜 형식 변환
 daily_position_df['date'] = pd.to_datetime(daily_position_df['date']).dt.date
