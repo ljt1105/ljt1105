@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import datetime
 import os
 from pykrx import stock
@@ -13,7 +14,7 @@ stock_info = stock.get_market_ohlcv_by_ticker(today)
 # 엑셀파일 경로 저장 및 읽어들일 시트 이름 설정
 file_path = r'C:\PythonProjects\recon\positions.xlsx'
 
-# Read each sheet from position.xlsx and save to dataframe
+# Read each sheet from positions.xlsx and save to dataframe
 transaction_df = pd.read_excel(file_path, sheet_name='transaction')
 opening_df = pd.read_excel(file_path, sheet_name='start')
 
@@ -24,7 +25,7 @@ start_df = opening_df[selected_columns]
 new_column_names = {
     'fund_code' :'fund_code', 
     'ticker' : 'ticker', 
-    'direction' : 'direction', 
+    'direction' : 'pos_direction', 
     'manager' : 'manager', 
     'stock_name' : 'stock_name', 
     'quantity' : 'remained_quantity', 
@@ -40,14 +41,14 @@ transaction_df.iloc[:, 6] = transaction_df.iloc[:, 6].apply(lambda x: str(x).zfi
 start_df.iloc[:, 1] = start_df.iloc[:, 1].apply(lambda x: str(x).zfill(6))
 
 # Modify transaction_df based on direction, tax, and commission
-transaction_df["quantity"] = transaction_df.apply(lambda row: f"+{row['quantity']}" if row['direction'] == "Buy" else f"-{row['quantity']}", axis=1)
-transaction_df["gross_amount"] = transaction_df.apply(lambda row: f"-{row['gross_amount']}" if row['direction'] == "Buy" else f"+{row['gross_amount']}", axis=1)
+transaction_df["quantity"] = transaction_df.apply(lambda row: f"+{row['quantity']}" if row['tr_direction'] == "Buy" else f"-{row['quantity']}", axis=1)
+transaction_df["gross_amount"] = transaction_df.apply(lambda row: f"-{row['gross_amount']}" if row['tr_direction'] == "Buy" else f"+{row['gross_amount']}", axis=1)
 transaction_df["commission"] = transaction_df.apply(lambda row: f"-{row['commission']}", axis=1)
 transaction_df["tax"] = transaction_df.apply(lambda row: f"-{row['tax']}", axis=1)
 
-start_df["remained_quantity"] = start_df.apply(lambda row: f"+{row['remained_quantity']}" if row['direction'] == "Buy" else f"-{row['remained_quantity']}", axis=1)
-start_df["entry_gross_amount"] = start_df.apply(lambda row: f"-{row['entry_gross_amount']}" if row['direction'] == "Buy" else f"+{row['entry_gross_amount']}", axis=1)
-start_df["entry_price"] = start_df.apply(lambda row: f"-{row['entry_price']}" if row['direction'] == "Buy" else f"+{row['entry_price']}", axis=1)
+start_df["remained_quantity"] = start_df.apply(lambda row: f"+{row['remained_quantity']}" if row['pos_direction'] == "LONG" else f"-{row['remained_quantity']}", axis=1)
+start_df["entry_gross_amount"] = start_df.apply(lambda row: f"-{row['entry_gross_amount']}" if row['pos_direction'] == "LONG" else f"+{row['entry_gross_amount']}", axis=1)
+start_df["entry_price"] = start_df.apply(lambda row: f"-{row['entry_price']}" if row['pos_direction'] == "LONG" else f"+{row['entry_price']}", axis=1)
 
 # 숫자로 변환할 열
 columns_to_convert_tr = ['gross_amount', 'quantity', 'commission', 'tax']
@@ -62,7 +63,7 @@ transaction_df[columns_to_convert_tr] = transaction_df[columns_to_convert_tr].ap
 start_df[columns_to_convert_st] = start_df[columns_to_convert_st].apply(convert_to_numeric)
 
 # transaction_df의 거래를 펀드코드
-sum_df = transaction_df.groupby(['date', 'fund_code', 'fund_name', 'ticker', 'stock_name', 'manager', 'direction'])['quantity', 'gross_amount', 'commission', 'tax'].sum().reset_index()
+sum_df = transaction_df.groupby(['date', 'fund_code', 'fund_name', 'ticker', 'stock_name', 'manager', 'tr_direction'])['quantity', 'gross_amount', 'commission', 'tax'].sum().reset_index()
 
 # 컬럼 추가 및 값 할당
 sum_df['avg_price'] = sum_df['gross_amount'] / sum_df['quantity']
@@ -95,7 +96,7 @@ for index, row in sum_df.iterrows():
     manager = row['manager']
     ticker = row['ticker']
     stock_name = row['stock_name']
-    direction = row['direction']
+    tr_direction = row['tr_direction']
     quantity = row['quantity']
     gross_amount = row['gross_amount']
     commission = row['commission']
@@ -111,12 +112,6 @@ for index, row in sum_df.iterrows():
 
     # 현재 거래일의 이전 정보가 있다면
     if not previous_info.empty:
-        # 이전 거래가 있으면 해당 거래에 반영
-        # previous_quantity = previous_info.iloc[0]['remained_quantity']
-        # previous_gross_amount = previous_info.iloc[0]['gross_amount']
-        # previous_commission = previous_info.iloc[0]['commission']
-        # previous_tax = previous_info.iloc[0]['tax']
-        # previous_remained_amount = previous_info.iloc[0]['remained_amount']
         # 날짜를 기준으로 오름차순으로 정렬
         previous_info = previous_info.sort_values(by='date')
         # 최신 거래 정보 가져오기
@@ -126,7 +121,7 @@ for index, row in sum_df.iterrows():
         previous_commission = latest_info['commission']
         previous_tax = latest_info['tax']
         previous_remained_amount = latest_info['remained_amount']
-        previous_direction = latest_info['direction']
+        pos_direction = latest_info['pos_direction']
         avg_price = previous_remained_amount / previous_quantity # editting
     else:
         previous_quantity = 0
@@ -136,6 +131,10 @@ for index, row in sum_df.iterrows():
         # tax = 0
         previous_tax = 0
         previous_remained_amount = 0
+        if tr_direction == "Buy":
+            pos_direction = "LONG"
+        else:
+            pos_direction = "SHORT"
         avg_price = gross_amount / quantity # editting
 
     # 남은 포지션 계산-
@@ -143,7 +142,14 @@ for index, row in sum_df.iterrows():
     remained_amount = previous_remained_amount + (quantity * avg_price)
     net_amount = gross_amount + commission + tax
     principal_amount = avg_price * quantity + commission + tax # editting
-    realized_pnl = principal_amount - net_amount # editting
+    # direction이 LONG일 때 traded_quantity가 음수일 때만 pnl 계산
+    if tr_direction == "Buy" and pos_direction == "SHORT":
+        pnl = net_amount - principal_amount
+    # direction이 SHORT일 때 traded_quantity가 양수일 때만 pnl 계산
+    elif tr_direction == "Sell" and pos_direction == "LONG":
+        pnl = net_amount - principal_amount
+    else:
+        pnl = 0  # 그 외의 경우에는 pnl을 0으로 설정
 
     # 남은 포지션 정보 업데이트
     position_info = {
@@ -152,9 +158,10 @@ for index, row in sum_df.iterrows():
         'manager': manager,
         'ticker': ticker,
         'stock_name': stock_name,
-        'direction': direction,
+        'pos_direction': pos_direction,
         'remained_quantity': remained_quantity,
         'remained_amount': remained_amount,
+        'tr_direction': tr_direction,
         'traded_quantity': quantity,
         'traded_amount': gross_amount,
         'commission': commission,
@@ -162,8 +169,7 @@ for index, row in sum_df.iterrows():
         'net_traded_amount': net_amount,
         'avg_price': avg_price,
         'principal_amount': principal_amount,
-        'realized_pnl': realized_pnl,
-
+        'pnl': pnl
     }
     
     # daily_position_df에 추가
@@ -175,4 +181,9 @@ for index, row in sum_df.iterrows():
 # 날짜 형식 변환
 daily_position_df['date'] = pd.to_datetime(daily_position_df['date']).dt.date
 
+# 남은 포지션 계산
+# direction_mapping = {0: "-", 1: "LONG", -1: "SHORT"}
+# daily_position_df["pos_direction"] = daily_position_df["remained_quantity"].apply(lambda x: direction_mapping.get(np.sign(x), "-"))
+
+# 엑셀 파일로 저장
 daily_position_df.to_excel('C:/PythonProjects/recon/daily_output.xlsx', index=False)
