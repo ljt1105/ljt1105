@@ -44,6 +44,11 @@ def load_ipo_stock_data():
     def convert_to_numeric(column):
         return pd.to_numeric(column, errors='coerce')
 
+    # Modify transaction_df based on direction, tax, and commission
+    filtered_ipo_df["quantity"] = filtered_ipo_df.apply(lambda row: f"+{row['quantity']}" if row['tr_direction'] == "Buy" else f"-{row['quantity']}", axis=1)
+    filtered_ipo_df["gross_amount"] = filtered_ipo_df.apply(lambda row: f"-{row['gross_amount']}" if row['tr_direction'] == "Buy" else f"+{row['gross_amount']}", axis=1)
+    filtered_ipo_df["commission"] = filtered_ipo_df.apply(lambda row: f"-{row['commission']}", axis=1)
+
     filtered_ipo_df[columns_to_convert] = filtered_ipo_df[columns_to_convert].apply(convert_to_numeric)
 
     return filtered_ipo_df

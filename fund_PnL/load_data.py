@@ -18,5 +18,4 @@ def load_beginning_transacion_data():
     # Read each sheet from positions.xlsx and save to dataframe
     transaction_df = pd.read_excel(file_path, sheet_name='transaction')
     opening_df = pd.read_excel(file_path, sheet_name='start')
-
-    return transaction_df, opening_df
+    return transaction_df, opening_df, stock_info

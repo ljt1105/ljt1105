@@ -5,7 +5,7 @@ import os
 from pykrx import stock
 from openpyxl import load_workbook
 
-def refine_stock_data(opening_df, transaction_df, filtered_ipo_df):
+def refine_stock_data(transaction_df, opening_df, stock_info, filtered_ipo_df):
 
     selected_columns = ['fund_code', 'ticker', 'direction', 'manager', 'stock_name', 'quantity', 'closing_price', 'beginning_gross_amount', 'commission', 'tax']
     start_df = opening_df[selected_columns]
@@ -57,9 +57,134 @@ def refine_stock_data(opening_df, transaction_df, filtered_ipo_df):
     # 컬럼 추가 및 값 할당
     sum_df['avg_price'] = sum_df['gross_amount'] / sum_df['quantity']
 
-    sum_df = pd.merge(filtered_ipo_df, sum_df, on={'date', 'fund_code', 'manager', 'direction', 'ticker', 'stock_name', 'quantity', 'avg_price', 'gross_amount', 'commission'})
+    sum_df = pd.concat([filtered_ipo_df, sum_df], ignore_index=False)
+    
+    # 날짜 형식 변경 시도
+    sum_df['date'] = pd.to_datetime(sum_df['date'], format='%Y-%m-%d')
 
     # sum_df를 date 순으로 정렬
-    sum_df.sort_values(by='date', inplace=True)
+    sum_df.sort_values(by=['date', 'fund_code', 'ticker'], inplace=True)
 
-    print(sum_df)
+    # 초기 날짜 설정
+    initial_date = sum_df['date'].min()
+
+    # 이전 포지션 초기화
+    previous_position = start_df.copy()
+    previous_position['date'] = initial_date  # 초기 날짜 설정
+    previous_position['net_amount'] = previous_position['entry_gross_amount'] + previous_position['commission'] + previous_position['tax']
+    previous_position['gross_amount'] = previous_position['entry_gross_amount']
+    previous_position['remained_amount'] = previous_position['entry_gross_amount']
+
+    # daily_position_df 초기화
+    daily_position_df = pd.DataFrame(columns=['date', 'fund_code', 'manager', 'ticker', 'stock_name', 'remained_quantity', 
+                                            'remained_amount', 'traded_quantity', 'traded_amount', 'commission', 'tax', 'net_amount', 'entry_price'])
+
+    # 초기 포지션 정보를 daily_position_df에 추가
+    daily_position_df = pd.concat([daily_position_df, previous_position], ignore_index=False)
+
+    # 날짜별로 반복하면서 포지션 계산
+    for index, row in sum_df.iterrows():
+        # 현재 거래 내역 가져오기
+        date = row['date']
+        fund_code = row['fund_code']
+        manager = row['manager']
+        ticker = row['ticker']
+        stock_name = row['stock_name']
+        tr_direction = row['tr_direction']
+        quantity = row['quantity']
+        gross_amount = row['gross_amount']
+        commission = row['commission']
+        tax = row['tax']
+        
+        # 현재 거래일을 Timestamp 객체로 변환
+        # date = pd.to_datetime(row['date'])
+
+        # 이전 포지션에서 해당 종목의 이전 정보 가져오기
+        previous_info = previous_position[(previous_position['fund_code'] == fund_code) & (previous_position['ticker'] == ticker) & 
+                                    (previous_position['manager'] == manager) & (previous_position['date'] <= date)]
+
+
+        # 현재 거래일의 이전 정보가 있다면
+        if not previous_info.empty:
+            # 날짜를 기준으로 오름차순으로 정렬
+            previous_info = previous_info.sort_values(by='date')
+            # 최신 거래 정보 가져오기
+            latest_info = previous_info.iloc[-1]
+            previous_quantity = latest_info['remained_quantity']
+            previous_gross_amount = latest_info['gross_amount']
+            previous_commission = latest_info['commission']
+            previous_tax = latest_info['tax']
+            previous_remained_amount = latest_info['remained_amount']
+            pos_direction = latest_info['pos_direction']
+            avg_price = previous_remained_amount / previous_quantity # editting
+        else:
+            previous_quantity = 0
+            previous_gross_amount = 0
+            previous_commission = 0
+            # commission = 0
+            # tax = 0
+            previous_tax = 0
+            previous_remained_amount = 0
+            if tr_direction == "Buy":
+                pos_direction = "LONG"
+            else:
+                pos_direction = "SHORT"
+            avg_price = gross_amount / quantity # editting
+
+        # 남은 포지션 계산-
+        remained_quantity = previous_quantity + quantity
+        # remained_amount = previous_remained_amount + gross_amount + commission + tax
+        try:
+            remained_amount = previous_remained_amount * (remained_quantity / previous_quantity)
+        except:
+            remained_amount = previous_remained_amount + gross_amount + commission + tax
+        
+        net_amount = gross_amount + commission + tax
+        principal_amount = avg_price * quantity # editting
+        # direction이 LONG일 때 traded_quantity가 음수일 때만 pnl 계산
+        if tr_direction == "Buy" and pos_direction == "SHORT":
+            pnl = net_amount - principal_amount
+        # direction이 SHORT일 때 traded_quantity가 양수일 때만 pnl 계산
+        elif tr_direction == "Sell" and pos_direction == "LONG":
+            pnl = net_amount - principal_amount
+        else:
+            pnl = "-"  # 그 외의 경우에는 pnl을 0으로 설정
+
+        # 남은 포지션 정보 업데이트
+        position_info = {
+            'date': date,
+            'fund_code': fund_code,
+            'manager': manager,
+            'ticker': ticker,
+            'stock_name': stock_name,
+            'pos_direction': pos_direction,
+            'remained_quantity': remained_quantity,
+            'remained_amount': remained_amount,
+            'tr_direction': tr_direction,
+            'traded_quantity': quantity,
+            'traded_amount': gross_amount,
+            'commission': commission,
+            'tax': tax,
+            'net_traded_amount': net_amount,
+            'avg_price': avg_price,
+            'principal_amount': principal_amount,
+            'pnl': pnl
+        }
+        
+        # daily_position_df에 추가
+        daily_position_df = pd.concat([daily_position_df, pd.DataFrame(position_info, index=[0])], ignore_index=True)
+        
+        # 이전 포지션 업데이트
+        previous_position = pd.concat([previous_position, pd.DataFrame(position_info, index=[0])], ignore_index=True)
+
+    # 날짜 형식 변환
+    daily_position_df['date'] = pd.to_datetime(daily_position_df['date']).dt.date
+
+    # 남은 포지션 계산
+    # direction_mapping = {0: "-", 1: "LONG", -1: "SHORT"}
+    # daily_position_df["pos_direction"] = daily_position_df["remained_quantity"].apply(lambda x: direction_mapping.get(np.sign(x), "-"))
+
+
+    return daily_position_df
+    # 엑셀 파일로 저장
+    # daily_position_df.to_excel('C:/PythonProjects/recon/daily_output.xlsx', index=False)
