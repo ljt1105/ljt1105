@@ -64,7 +64,7 @@ def refine_stock_data(transaction_df, opening_df, stock_info, filtered_ipo_df):
 
     # sum_df를 date 순으로 정렬
     sum_df.sort_values(by=['date', 'fund_code', 'ticker'], inplace=True)
-
+    
     # 초기 날짜 설정
     initial_date = sum_df['date'].min()
 
@@ -77,7 +77,7 @@ def refine_stock_data(transaction_df, opening_df, stock_info, filtered_ipo_df):
 
     # daily_position_df 초기화
     daily_position_df = pd.DataFrame(columns=['date', 'fund_code', 'manager', 'ticker', 'stock_name', 'remained_quantity', 
-                                            'remained_amount', 'traded_quantity', 'traded_amount', 'commission', 'tax', 'net_amount', 'entry_price'])
+                                            'remained_amount', 'traded_quantity', 'traded_amount', 'commission', 'tax', 'net_traded_amount', 'entry_price'])
 
     # 초기 포지션 정보를 daily_position_df에 추가
     daily_position_df = pd.concat([daily_position_df, previous_position], ignore_index=False)
@@ -133,11 +133,14 @@ def refine_stock_data(transaction_df, opening_df, stock_info, filtered_ipo_df):
 
         # 남은 포지션 계산-
         remained_quantity = previous_quantity + quantity
-        # remained_amount = previous_remained_amount + gross_amount + commission + tax
-        try:
-            remained_amount = previous_remained_amount * (remained_quantity / previous_quantity)
-        except:
+        remained_amount = previous_remained_amount + gross_amount + commission + tax
+        # try:
+        if (tr_direction == "Buy" and pos_direction == "LONG") or (tr_direction == "Sell" and pos_direction == "SHORT"):
             remained_amount = previous_remained_amount + gross_amount + commission + tax
+        else:
+            remained_amount = previous_remained_amount * (remained_quantity / previous_quantity)
+        # except:
+        #     remained_amount = previous_remained_amount + gross_amount + commission + tax
         
         net_amount = gross_amount + commission + tax
         principal_amount = avg_price * quantity # editting
