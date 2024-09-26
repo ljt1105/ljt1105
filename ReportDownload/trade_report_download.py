@@ -462,6 +462,106 @@ def DS_trade_report_download():
 
     print("DS report download complete")
 
+def Daiwa_trade_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/Daiwa")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("Daiwa")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("Daiwa report download complete")
+
+def tradeTeam_report_download():
+    output_dir = Path("Z:/02.펀드/019. 일간매매내역")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("거래내역")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("Trade report download complete")
+
+def OESERVER_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/OESERVER")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("OESERVER")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("OESERVER report download complete")
+
+def PRELUDE_RECAP_report_download():
+    output_dir = Path("Z:/02.펀드/003.매매보고서 대사/PRELUDE_RECAP")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    outlook = win32com.client.Dispatch("outlook.application").GetNamespace("MAPI")
+    inbox = outlook.GetDefaultFolder(6).Folders("PRELUDE_RECAP")
+    messages = inbox.Items
+
+    for message in messages:
+        if message.Unread:
+
+            attachments = message.Attachments
+
+            target_folder = output_dir
+            target_folder.mkdir(parents=True, exist_ok=True)
+
+            for attachment in attachments:
+                attachment.SaveAsFile(target_folder / str(attachment))
+                
+                if message.Unread:
+                    message.Unread = False
+
+            extract_attachments(output_dir, attachments)
+
+    print("PRELUDE_RECAP report download complete")  
+
 # def trade_report_download():
 if __name__ == "__main__":
     print("===================================================")
@@ -500,4 +600,12 @@ if __name__ == "__main__":
     DAOL_trade_report_download()
     print("===================================================")
     DS_trade_report_download()
+    print("===================================================")
+    Daiwa_trade_report_download()
+    print("===================================================")
+    tradeTeam_report_download()
+    print("===================================================")
+    OESERVER_report_download()
+    print("===================================================")
+    PRELUDE_RECAP_report_download()
     print("===================================================")
