@@ -26,7 +26,7 @@ def read_df_files():
     print("Today : " + td_tr)
 
 
-    oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/" + td + "_oms.xls", )
+    oms_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/" + td + "_oms.xlsx", )
     trader_df = pd.read_excel("Z:/02.펀드/019. 일간매매내역/" + td_tr + " 전체.xlsx", )
 
     print("File load completed")
