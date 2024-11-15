@@ -76,9 +76,27 @@ def main():
     move_files_with_keyword(source_dir7, target_dir7, keyword7)
 
     # 원본, 목표 디렉터리 설정
-    pre_es16_source_dir = r"Z:\02.펀드\003.매매보고서 대사\PRELUDE_MTM"
-    pre_es16_dest_dir = r"Z:\02.펀드\003.매매보고서 대사\PRELUDE_MTM\ES16"
+    pre_es16_source_dir = r"Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM"
+    pre_es16_dest_dir = r"Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM/ES16"
 
+    # "EQSWAP16X"를 포함하고 확장자가 .xlsx인 파일 복사
+    try:
+        files_copied = 0
+        for file_name in os.listdir(pre_es16_source_dir):
+            # 파일명에 "EQSWAP16X" 포함 여부와 확장자가 ".xlsx"인지 확인
+            if "EQSWAP16X" in file_name and file_name.endswith(".xlsx"):
+                source_file_path = os.path.join(pre_es16_source_dir, file_name)
+                if os.path.isfile(source_file_path):  # 파일인지 확인
+                    shutil.copy(source_file_path, pre_es16_dest_dir)
+                    files_copied += 1
+                    print(f"'{file_name}' 파일을 복사했습니다.")
+        
+        if files_copied == 0:
+            print("복사할 파일이 없습니다.")
+        else:
+            print(f"총 {files_copied}개의 파일이 성공적으로 복사되었습니다.")
+    except Exception as e:
+        print(f"파일 복사 중 오류가 발생했습니다: {e}")
 
 
     print("Files moved successfully.")
