@@ -75,6 +75,11 @@ def main():
 
     move_files_with_keyword(source_dir7, target_dir7, keyword7)
 
+    # 원본, 목표 디렉터리 설정
+    pre_es16_source_dir = r"Z:\02.펀드\003.매매보고서 대사\PRELUDE_MTM"
+    pre_es16_dest_dir = r"Z:\02.펀드\003.매매보고서 대사\PRELUDE_MTM\ES16"
+
+
 
     print("Files moved successfully.")
 

@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append(r'C:/PythonProjects/ljt1105/TradeVerification/modules')
+sys.path.append(r'D:/PythonProjects/ljt1105/TradeVerification/modules')
 
 import read_files
 import refine_data
