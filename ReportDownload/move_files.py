@@ -14,8 +14,8 @@ def move_files_with_keyword(source_dir, target_dir, keyword):
             # 파일 이동
             shutil.move(source_file, target_file)
 
-def prelude_rpt_move(pre_source_dir, pre_dest_dir, rpt_keyword):
-    # "EQSWAP16X"를 포함하고 확장자가 .xlsx인 파일 복사
+def rpt_copy(pre_source_dir, pre_dest_dir, rpt_keyword):
+    # "EQSWAP16X"를 포함하고 확장자가 .csv인 파일 복사
     try:
         files_copied = 0
         for file_name in os.listdir(pre_source_dir):
@@ -33,6 +33,27 @@ def prelude_rpt_move(pre_source_dir, pre_dest_dir, rpt_keyword):
             print(f"총 {files_copied}개의 파일이 성공적으로 복사되었습니다.")
     except Exception as e:
         print(f"파일 복사 중 오류가 발생했습니다: {e}")
+
+def rpt_move(pre_source_dir, pre_dest_dir, rpt_keyword):
+    # "EQSWAP16X"를 포함하고 확장자가 .csv인 파일 복사
+    try:
+        files_moved = 0
+        for file_name in os.listdir(pre_source_dir):
+            # 파일명에 "EQSWAP16X" 포함 여부와 확장자가 ".xlsx"인지 확인
+            if rpt_keyword in file_name and file_name.endswith(".csv"):
+                source_file_path = os.path.join(pre_source_dir, file_name)
+                if os.path.isfile(source_file_path):  # 파일인지 확인
+                    shutil.move(source_file_path, pre_dest_dir)
+                    files_moved += 1
+                    print(f"'{file_name}' 파일을 이동됐습니다.")
+        
+        if files_moved == 0:
+            print("이동시킬 파일이 없습니다.")
+        else:
+            print(f"총 {files_moved}개의 파일이 성공적으로 이동되었습니다.")
+    except Exception as e:
+        print(f"파일 복사 중 오류가 발생했습니다: {e}")
+
 
 def main():
     source_dir = r"Z:/02.펀드/003.매매보고서 대사/KB-SWAP"
@@ -94,9 +115,10 @@ def main():
     pre_es40_dest_dir = r"Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM/ES40"
     rpt40_keyword = "EQSWAP40X"
 
-    prelude_rpt_move(pre_source_dir, pre_es16_dest_dir, rpt16_keyword)
-    prelude_rpt_move(pre_source_dir, pre_es24_dest_dir, rpt24_keyword)
-    prelude_rpt_move(pre_source_dir, pre_es40_dest_dir, rpt40_keyword)
+    rpt_copy(pre_source_dir, pre_es16_dest_dir, rpt16_keyword)
+    rpt_copy(pre_source_dir, pre_es24_dest_dir, rpt24_keyword)
+    rpt_copy(pre_source_dir, pre_es40_dest_dir, rpt40_keyword)
+
 
     pre_source_dir = r"Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM"
     pre_dest_dir = r"Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM/old"
@@ -122,7 +144,8 @@ def main():
     except Exception as e:
         print(f"파일 이동 중 오류가 발생했습니다: {e}")
 
-
+    
+    
     print("Files moved successfully.")
 
 if __name__ == "__main__":
