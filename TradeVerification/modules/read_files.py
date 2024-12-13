@@ -10,7 +10,7 @@ def read_df_files():
 
     # yyyymmdd 형식으로 변환
     td = current_date.strftime("%Y%m%d")
-    # td = "20230607"
+    # td = "20241212"
 
     td_tr1 = current_date.strftime("%Y").lstrip("0")
     td_tr2 = current_date.strftime("%m").lstrip("0")
@@ -21,7 +21,7 @@ def read_df_files():
     #td_tr3 = current_date.strftime("%d")
 
     td_tr = td_tr2 + "월" + td_tr3 + "일"
-    # td_tr = "9월14일"
+    # td_tr = "12월12일"
 
     print("Today : " + td_tr)
 

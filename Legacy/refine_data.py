@@ -43,6 +43,8 @@ def refine_df(oms_df, trader_df, td):
 
     trader_df1 = trader_df1.dropna()
 
+
+
     trader_df2 = trader_df1.set_index(['펀드', '종목명', '매매구분'])
 
     trader_df3 = trader_df2.groupby(['펀드', '종목명', '매매구분']).agg({'체결수량': 'sum', '체결단가': 'mean', '체결금액': 'sum'})
@@ -53,6 +55,34 @@ def refine_df(oms_df, trader_df, td):
     oms_df4 = oms_df4.astype({'체결수량' : 'int', '체결단가' : 'int', '체결금액' : 'int'})
 
     trader_df3['체결금액'] = trader_df3['체결금액'].abs()
+
+    # trader_df3 = trader_df3.reset_index()
+    # oms_df4 = oms_df4.reset_index()
+
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != 'KOSPI200F']
+    except:
+        pass
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != 'KOSDAQ150F']
+    except:
+        pass
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != '코스피200F']
+    except:
+        pass
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != '코스닥150F']
+    except:
+        pass
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != '코스피F200']
+    except:
+        pass
+    try:
+        trader_df3 = trader_df3[trader_df3['종목명'] != '코스닥F150']
+    except:
+        pass
 
     print("Refining comlpeted")
 
