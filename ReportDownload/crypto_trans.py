@@ -185,61 +185,61 @@ def volume_data_combine():
 
 def main():
 
-    # cryptoTransactionHistory_download()
+    cryptoTransactionHistory_download()
 
-    # crt_accounts_source = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record"
+    crt_accounts_source = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record"
 
-    # strat_1356824_wallet = "1356824_wallet"
-    # strat_1356824_trade = "1356824_trade"
-    # crt_1356824_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/1356824"
-    # crt_1356824_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1356824"
-    # rpt_move(crt_accounts_source, crt_1356824_wal_dest, strat_1356824_wallet)
-    # rpt_move(crt_accounts_source, crt_1356824_tr_dest, strat_1356824_trade)
+    strat_1356824_wallet = "1356824_wallet"
+    strat_1356824_trade = "1356824_trade"
+    crt_1356824_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/1356824"
+    crt_1356824_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1356824"
+    rpt_move(crt_accounts_source, crt_1356824_wal_dest, strat_1356824_wallet)
+    rpt_move(crt_accounts_source, crt_1356824_tr_dest, strat_1356824_trade)
 
-    # strat_238210_wallet = "238210_wallet"
-    # strat_238210_trade = "238210_trade"
-    # crt_238210_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/238210"
-    # crt_238210_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/238210"
-    # rpt_move(crt_accounts_source, crt_238210_wal_dest, strat_238210_wallet)
-    # rpt_move(crt_accounts_source, crt_238210_tr_dest, strat_238210_trade)
+    strat_238210_wallet = "238210_wallet"
+    strat_238210_trade = "238210_trade"
+    crt_238210_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/238210"
+    crt_238210_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/238210"
+    rpt_move(crt_accounts_source, crt_238210_wal_dest, strat_238210_wallet)
+    rpt_move(crt_accounts_source, crt_238210_tr_dest, strat_238210_trade)
 
-    # strat_476727_wallet = "476727_wallet"
-    # strat_476727_trade = "476727_trade"
-    # crt_476727_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/476727"
-    # crt_476727_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/476727"
-    # rpt_move(crt_accounts_source, crt_476727_wal_dest, strat_476727_wallet)
-    # rpt_move(crt_accounts_source, crt_476727_tr_dest, strat_476727_trade)
+    strat_476727_wallet = "476727_wallet"
+    strat_476727_trade = "476727_trade"
+    crt_476727_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/476727"
+    crt_476727_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/476727"
+    rpt_move(crt_accounts_source, crt_476727_wal_dest, strat_476727_wallet)
+    rpt_move(crt_accounts_source, crt_476727_tr_dest, strat_476727_trade)
 
-    # strat_1223695_wallet = "1223695_wallet"
-    # strat_1223695_trade = "1223695_trade"
-    # crt_1223695_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/1223695"
-    # crt_1223695_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1223695"
-    # rpt_move(crt_accounts_source, crt_1223695_wal_dest, strat_1223695_wallet)
-    # rpt_move(crt_accounts_source, crt_1223695_tr_dest, strat_1223695_trade)
+    strat_1223695_wallet = "1223695_wallet"
+    strat_1223695_trade = "1223695_trade"
+    crt_1223695_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/1223695"
+    crt_1223695_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1223695"
+    rpt_move(crt_accounts_source, crt_1223695_wal_dest, strat_1223695_wallet)
+    rpt_move(crt_accounts_source, crt_1223695_tr_dest, strat_1223695_trade)
 
-    # current_date = datetime.datetime.now()
-    # td = current_date.strftime("%Y-%m-%d")
+    current_date = datetime.datetime.now()
+    td = current_date.strftime("%Y-%m-%d")
 
-    # start_date = '2024-08-01'
-    # end_date = td
-    # symbols = ['XBTUSD']
-    # btc_close_data = get_close_prices_ccxt('bitmex', symbols, start_date, end_date)
+    start_date = '2024-08-01'
+    end_date = td
+    symbols = ['XBTUSD']
+    btc_close_data = get_close_prices_ccxt('bitmex', symbols, start_date, end_date)
 
-    # save_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record"
-    # dir238210_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/238210"
-    # filename_238210 = "238210_rawdata_"
-    # dir476727_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/476727"
-    # filename_476727 = "476727_rawdata_"
-    # dir1356824_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1356824"
-    # filename_1356824 = "1356824_rawdata_"
-    # dir1223695_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1223695"
-    # filename_1223695 = "1223695_rawdata_"
-    # combine_transaction_data(dir238210_path, save_path, filename_238210, close_price_data=btc_close_data)
-    # combine_transaction_data(dir476727_path, save_path, filename_476727, close_price_data=btc_close_data)
-    # combine_transaction_data(dir1356824_path, save_path, filename_1356824, close_price_data=btc_close_data)
-    # combine_transaction_data(dir1223695_path, save_path, filename_1223695, close_price_data=btc_close_data)
+    save_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record"
+    dir238210_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/238210"
+    filename_238210 = "238210_rawdata_"
+    dir476727_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/476727"
+    filename_476727 = "476727_rawdata_"
+    dir1356824_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1356824"
+    filename_1356824 = "1356824_rawdata_"
+    dir1223695_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1223695"
+    filename_1223695 = "1223695_rawdata_"
+    combine_transaction_data(dir238210_path, save_path, filename_238210, close_price_data=btc_close_data)
+    combine_transaction_data(dir476727_path, save_path, filename_476727, close_price_data=btc_close_data)
+    combine_transaction_data(dir1356824_path, save_path, filename_1356824, close_price_data=btc_close_data)
+    combine_transaction_data(dir1223695_path, save_path, filename_1223695, close_price_data=btc_close_data)
 
-    volume_data_combine()
+    # volume_data_combine()
 
 
 if __name__ == "__main__":
