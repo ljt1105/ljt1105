@@ -198,8 +198,8 @@ def read_trader_file():
 
 def aggregate_by_key(df):
     # 펀드명, 매매구분, 단축코드로 그룹화
-    aggregated_df = df.groupby(['펀드명', '매매구분', '단축코드'], as_index=False).agg({
-        '종목명': 'first',  # 그룹에서 첫 번째 종목명을 사용
+    aggregated_df = df.groupby(['펀드명', '매매구분', '종목명'], as_index=False).agg({
+        # '종목명': 'first',  # 그룹에서 첫 번째 종목명을 사용
         '체결수량': 'sum',
         '체결금액': 'sum',
         '체결단가': lambda x: (x * df.loc[x.index, '체결수량']).sum() / df.loc[x.index, '체결수량'].sum()
@@ -224,7 +224,7 @@ def merge_and_reconcile(output_path):
     # 2. 대사 작업: 펀드명, 매매구분, 단축코드가 일치하는 행에서 체결단가, 체결수량, 체결금액 비교
     reconciliation_df = aggregated_oms.merge(
         aggregated_trader,
-        on=['펀드명', '매매구분', '단축코드'],
+        on=['펀드명', '매매구분', '종목명'],
         suffixes=('_oms', '_trader'),
         how='outer',
         indicator=True
@@ -236,15 +236,15 @@ def merge_and_reconcile(output_path):
     reconciliation_df['체결금액_차이'] = reconciliation_df['체결금액_oms'] - reconciliation_df['체결금액_trader']
 
     # 종목명 유지: Trader의 종목명을 우선 사용, 없으면 OMS의 종목명을 사용
-    reconciliation_df['종목명'] = reconciliation_df['종목명_trader'].combine_first(reconciliation_df['종목명_oms'])
+    # reconciliation_df['종목명'] = reconciliation_df['종목명_trader'].combine_first(reconciliation_df['종목명_oms'])
 
     # 필요 없는 종목명 관련 컬럼 제거
-    reconciliation_df.drop(columns=['종목명_trader', '종목명_oms'], inplace=True, errors='ignore')
+    # reconciliation_df.drop(columns=['종목명_trader', '종목명_oms'], inplace=True, errors='ignore')
 
     # 결과 출력
     print("대사 결과:")
-    # print(reconciliation_df[['펀드명', '매매구분', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']])
-    print(tabulate(reconciliation_df[['펀드명', '매매구분', '단축코드', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
+    print(tabulate(reconciliation_df[['펀드명', '매매구분', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(reconciliation_df[['펀드명', '매매구분', '단축코드', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
 
     # 결과를 파일로 저장 (옵션)
     reconciliation_df.to_excel(output_path, index=False)
