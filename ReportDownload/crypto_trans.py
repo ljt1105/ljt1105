@@ -239,7 +239,7 @@ def main():
     combine_transaction_data(dir1356824_path, save_path, filename_1356824, close_price_data=btc_close_data)
     combine_transaction_data(dir1223695_path, save_path, filename_1223695, close_price_data=btc_close_data)
 
-    # volume_data_combine()
+    volume_data_combine()
 
 
 if __name__ == "__main__":

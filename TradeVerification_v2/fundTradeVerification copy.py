@@ -163,7 +163,8 @@ def read_prelude_stock_trade_history():
 
 def read_trader_file():
 
-    today = datetime.now().strftime("%m월%d일")
+    # today = datetime.now().strftime("%m월%d일")
+    today = f"{datetime.now().month}월{datetime.now().day}일"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/{today} 전체.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -198,8 +199,8 @@ def read_trader_file():
 
 def aggregate_by_key(df):
     # 펀드명, 매매구분, 단축코드로 그룹화
-    aggregated_df = df.groupby(['펀드명', '매매구분', '종목명'], as_index=False).agg({
-        # '종목명': 'first',  # 그룹에서 첫 번째 종목명을 사용
+    aggregated_df = df.groupby(['펀드명', '매매구분', '단축코드'], as_index=False).agg({
+        '종목명': 'first',  # 그룹에서 첫 번째 종목명을 사용
         '체결수량': 'sum',
         '체결금액': 'sum',
         '체결단가': lambda x: (x * df.loc[x.index, '체결수량']).sum() / df.loc[x.index, '체결수량'].sum()
@@ -244,7 +245,7 @@ def merge_and_reconcile(output_path):
     # 결과 출력
     print("대사 결과:")
     print(tabulate(reconciliation_df[['펀드명', '매매구분', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
-    # print(tabulate(reconciliation_df[['펀드명', '매매구분', '단축코드', '종목명', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(reconciliation_df[['펀드명', '매매구분', '단축코드', '체결단가_차이', '체결수량_차이', '체결금액_차이']], headers = 'keys', tablefmt = 'pretty'))
 
     # 결과를 파일로 저장 (옵션)
     reconciliation_df.to_excel(output_path, index=False)
