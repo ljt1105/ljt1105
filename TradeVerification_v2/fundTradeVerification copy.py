@@ -98,8 +98,13 @@ def read_oms_stock_file():
 
     kospi_mapping = {stock.get_market_ticker_name(ticker): ticker for ticker in kospi_stocks}
     kosdaq_mapping = {stock.get_market_ticker_name(ticker): ticker for ticker in kosdaq_stocks}
+
+    # ETF 종목코드 가져오기
+    etf_tickers = stock.get_etf_ticker_list(date=date)
+    etf_mapping = {stock.get_etf_ticker_name(ticker): ticker for ticker in etf_tickers} 
+
     # 두 시장의 매핑 통합
-    stock_code_mapping = {**kospi_mapping, **kosdaq_mapping}
+    stock_code_mapping = {**kospi_mapping, **kosdaq_mapping, **etf_mapping}
 
     # 종목명으로 단축코드 매핑
     df['단축코드'] = df['종목명'].map(stock_code_mapping)
