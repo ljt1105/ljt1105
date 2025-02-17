@@ -238,6 +238,20 @@ def main():
     rpt_move(crt_accounts_source, crt_1862689_wal_dest, strat_1862689_wallet)
     rpt_move(crt_accounts_source, crt_1862689_tr_dest, strat_1862689_trade)
 
+    strat_2274833_wallet = "2274833_wallet"
+    strat_2274833_trade = "2274833_trade"
+    crt_2274833_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/2274833"
+    crt_2274833_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/2274833"
+    rpt_move(crt_accounts_source, crt_2274833_wal_dest, strat_2274833_wallet)
+    rpt_move(crt_accounts_source, crt_2274833_tr_dest, strat_2274833_trade)
+
+    strat_2274834_wallet = "2274834_wallet"
+    strat_2274834_trade = "2274834_trade"
+    crt_2274834_wal_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/wallet/2274834"
+    crt_2274834_tr_dest = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/2274834"
+    rpt_move(crt_accounts_source, crt_2274834_wal_dest, strat_2274834_wallet)
+    rpt_move(crt_accounts_source, crt_2274834_tr_dest, strat_2274834_trade)
+
     current_date = datetime.datetime.now()
     td = current_date.strftime("%Y-%m-%d")
 
@@ -261,6 +275,10 @@ def main():
     filename_2218789 = "2218789_rawdata_"
     dir1862689_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/1862689"
     filename_1862689 = "1862689_rawdata_"
+    dir2274833_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/2274833"
+    filename_2274833 = "2274833_rawdata_"
+    dir2274834_path = "Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/trade/2274834"
+    filename_2274834 = "2274834_rawdata_"
     combine_transaction_data(dir238210_path, save_path, filename_238210, close_price_data=btc_close_data)
     combine_transaction_data(dir476727_path, save_path, filename_476727, close_price_data=btc_close_data)
     combine_transaction_data(dir1356824_path, save_path, filename_1356824, close_price_data=btc_close_data)
@@ -268,6 +286,8 @@ def main():
     combine_transaction_data(dir2239652_path, save_path, filename_2239652, close_price_data=btc_close_data)
     combine_transaction_data(dir2218789_path, save_path, filename_2218789, close_price_data=btc_close_data)
     combine_transaction_data(dir1862689_path, save_path, filename_1862689, close_price_data=btc_close_data)
+    combine_transaction_data(dir2274833_path, save_path, filename_2274833, close_price_data=btc_close_data)
+    combine_transaction_data(dir2274834_path, save_path, filename_2274834, close_price_data=btc_close_data)
 
     volume_data_combine()
 
