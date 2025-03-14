@@ -239,4 +239,4 @@ def order_split(_order_list):
     return date_list
 
 
-period_pnl_details("2024-01-01","2024-06-30")
+period_pnl_details("2024-01-01","2024-12-31")

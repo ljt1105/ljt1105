@@ -185,7 +185,7 @@ def volume_data_combine():
 
 def main():
 
-    cryptoTransactionHistory_download()
+    # cryptoTransactionHistory_download()
 
     crt_accounts_source = r"Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record"
 

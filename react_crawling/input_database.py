@@ -87,6 +87,33 @@ account_list = [
     'kr-dunamisam-krw-fm-venture-1-macro-futures',
     'kr-dunamisam-krw-fm-venture-1-post-stock',
     'kr-dunamisam-krw-fm-venture-1-post-futures',
+    'kr-dunamisam-krw-fm-venture-2',
+    'kr-dunamisam-krw-fm-venture-2-block-futures',
+    'kr-dunamisam-krw-fm-venture-2-block-stock',
+    'kr-dunamisam-krw-fm-venture-2-event-futures',
+    'kr-dunamisam-krw-fm-venture-2-event-stock',
+    'kr-dunamisam-krw-fm-venture-2-ipo-exist',
+    'kr-dunamisam-krw-fm-venture-2-ipo-ipo',
+    'kr-dunamisam-krw-fm-venture-2-ipo-new',
+    'kr-dunamisam-krw-fm-venture-2-ls-futures',
+    'kr-dunamisam-krw-fm-venture-2-ls-stock',
+    'kr-dunamisam-krw-fm-venture-2-macro-futures',
+    'kr-dunamisam-krw-fm-venture-2-macro-stock',
+    'kr-dunamisam-krw-fm-venture-2-post-futures',
+    'kr-dunamisam-krw-fm-venture-2-post-stock',
+    'kr-dunamisam-krw-fm-venture-3-block-futures',
+    'kr-dunamisam-krw-fm-venture-3-block-stock',
+    'kr-dunamisam-krw-fm-venture-3-event-futures',
+    'kr-dunamisam-krw-fm-venture-3-event-stock',
+    'kr-dunamisam-krw-fm-venture-3-ipo-exist',
+    'kr-dunamisam-krw-fm-venture-3-ipo-ipo',
+    'kr-dunamisam-krw-fm-venture-3-ipo-new',
+    'kr-dunamisam-krw-fm-venture-3-ls-futures',
+    'kr-dunamisam-krw-fm-venture-3-ls-stock',
+    'kr-dunamisam-krw-fm-venture-3-macro-futures',
+    'kr-dunamisam-krw-fm-venture-3-macro-stock',
+    'kr-dunamisam-krw-fm-venture-3-post-futures',
+    'kr-dunamisam-krw-fm-venture-3-post-stock',
     'kr-dunamisam-krw-fm-multi-1',
     'kr-dunamisam-krw-fm-multi-1-ls-stock',
     'kr-dunamisam-krw-fm-multi-1-ls-futures',
@@ -110,7 +137,8 @@ account_list = [
     'kr-dunamisam-krw-fm-ipo-alpha-ipo-stock',
     'kr-dunamisam-krw-fm-ipo-block-block-stock',
     'kr-dunamisam-krw-fm-ipo-block-ipo-stock'
-
+    'kr-dunamisam-krw-et-prelude-futures',
+    'kr-dunamisam-krw-et-prelude-stock'
 ]
 
 

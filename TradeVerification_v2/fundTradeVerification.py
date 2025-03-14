@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 def read_oms_futures_file():
 
     today = datetime.now().strftime("%Y-%m-%d")
+    # today = "2025-03-12"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/파생/{today}_futures.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -29,7 +30,8 @@ def read_oms_futures_file():
         "두나미스 코스닥벤처 일반사모투자신탁": "코스닥벤처1호",
         "두나미스 코스닥벤처 일반사모투자신탁 2호": "코스닥벤처2호",
         "두나미스 코스닥벤처 일반사모투자신탁 3호": "코스닥벤처3호",
-        "두나미스 멀티전략 일반사모(운)": "멀티전략",
+        "두나미스 멀티전략 일반사모(운)": "멀티1호",
+        "두나미스 멀티전략 일반사모투자신탁 2호": "멀티2호",
         "두나미스 블록딜 공모주 일반사모투자신탁": "블록딜",
         "DUNAMIS_PRELUDE 일임 (USD)": "Prelude"
     }
@@ -61,6 +63,7 @@ def read_oms_futures_file():
 def read_oms_stock_file():
 
     today = datetime.now().strftime("%Y-%m-%d")
+    # today = "2025-03-12"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/주식/{today}_stock.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -79,7 +82,8 @@ def read_oms_stock_file():
         "두나미스 코스닥벤처 일반사모투자신탁": "코스닥벤처1호",
         "두나미스 코스닥벤처 일반사모투자신탁 2호": "코스닥벤처2호",
         "두나미스 코스닥벤처 일반사모투자신탁 3호": "코스닥벤처3호",
-        "두나미스 멀티전략 일반사모(운)": "멀티전략",
+        "두나미스 멀티전략 일반사모(운)": "멀티1호",
+        "두나미스 멀티전략 일반사모투자신탁 2호": "멀티2호",
         "두나미스 블록딜공모주 일반사모투자신탁 1호(운용)": "블록딜",
         "DUNAMIS_PRELUDE 일임 (USD)": "Prelude"
     }
@@ -134,6 +138,7 @@ def read_oms_stock_file():
 def read_prelude_stock_trade_history():
 
     today = datetime.now().strftime("%m%d%y")
+    # today = "031225"
 
     file_path = f"Z:/02.펀드/003.매매보고서 대사/PRELUDE_RECAP/Korea Stocks - {today}.xls"
     df = pd.read_excel(file_path)
@@ -170,6 +175,7 @@ def read_trader_file():
 
     # today = datetime.now().strftime("%m월%d일")
     today = f"{datetime.now().month}월{datetime.now().day}일"
+    # today = "3월12일"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/{today} 전체.xlsx'  # 파일 경로를 적절히 수정하세요.

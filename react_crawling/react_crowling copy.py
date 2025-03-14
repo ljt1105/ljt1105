@@ -127,7 +127,8 @@ def period_pnl_details(_from: str, _to: str):
         perform_dict['quantity'] = _page['quantity']
         perform_dict['unrealizedPnl'] = _page['unrealizedPnl']
         perform_dict['realizedPnl'] = _page['realizedPnl']
-        perform_dict['comm'] = _page['commissionFee']
+        # perform_dict['comm'] = _page['commissionFee']
+        perform_dict['comm'] = _page['commission']
         perform_dict['stamp'] = _page['stampDuty']
         perform_dict['cumulative_pnl'] = _page['cumulativePnl'] + perform_dict['comm'] + perform_dict['stamp']
         if perform_dict['ticker'] == "252670":
@@ -244,4 +245,4 @@ def order_split(_order_list):
     return date_list
 
 
-period_pnl_details("2024-01-01","2024-06-30")
+period_pnl_details("2024-01-01","2024-12-31")
