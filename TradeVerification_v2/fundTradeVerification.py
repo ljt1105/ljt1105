@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 def read_oms_futures_file():
 
     today = datetime.now().strftime("%Y-%m-%d")
-    # today = "2025-03-12"
+    # today = "2025-04-25"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/파생/{today}_futures.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -23,7 +23,7 @@ def read_oms_futures_file():
 
     # 3. 펀드명 변환
     fund_name_mapping = {
-        "두나미스 공모주 일반사모투자신탁": "공모주1호",
+        "두나미스 공모주멀티 일반사모투자신탁": "공모주1호",
         "두나미스 공모주 일반사모투자신탁 제2호": "공모주2호",
         "두나미스 공모주 포커스 일반사모투자신탁": "포커스",
         "두나미스 공모주 알파 일반사모투자신탁 운": "알파",
@@ -55,7 +55,7 @@ def read_oms_futures_file():
     oms_futures_df = df
 
     # 결과 확인
-    print(tabulate(oms_futures_df, headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(oms_futures_df, headers = 'keys', tablefmt = 'pretty'))
 
     return oms_futures_df
 
@@ -63,7 +63,7 @@ def read_oms_futures_file():
 def read_oms_stock_file():
 
     today = datetime.now().strftime("%Y-%m-%d")
-    # today = "2025-03-12"
+    # today = "2025-04-25"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/주식/{today}_stock.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -75,7 +75,7 @@ def read_oms_stock_file():
 
     # 3. 펀드명 변환
     fund_name_mapping = {
-        "두나미스 공모주 일반사모투자신탁": "공모주1호",
+        "두나미스 공모주멀티 일반사모투자신탁": "공모주1호",
         "두나미스 공모주 일반사모투자신탁 제2호": "공모주2호",
         "두나미스 공모주 포커스 일반사모투자신탁": "포커스",
         "두나미스 공모주 알파 일반사모투자신탁 운용": "알파",
@@ -131,14 +131,14 @@ def read_oms_stock_file():
     oms_stock_df = df
 
     # 결과 확인
-    print(tabulate(oms_stock_df, headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(oms_stock_df, headers = 'keys', tablefmt = 'pretty'))
 
     return oms_stock_df
 
 def read_prelude_stock_trade_history():
 
     today = datetime.now().strftime("%m%d%y")
-    # today = "031225"
+    # today = "042525"
 
     file_path = f"Z:/02.펀드/003.매매보고서 대사/PRELUDE_RECAP/Korea Stocks - {today}.xls"
     df = pd.read_excel(file_path)
@@ -162,11 +162,11 @@ def read_prelude_stock_trade_history():
     df['펀드명'] = 'Prelude'
 
     # 7. 매매구분 값을 변환 (Buy -> 매수, Sell -> 매도)
-    df['매매구분'] = df['매매구분'].replace({'Buy': '매수', 'Sell': '매도'})
+    df['매매구분'] = df['매매구분'].replace({'Buy': '매수', 'Sell': '매도', 'Sell Short': '매도', 'Buy Cover': '매수', 'Short sell': '매도', 'Buy cover': '매수'})
 
     prelude_stock_df = df
 
-    print(tabulate(df, headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(df, headers = 'keys', tablefmt = 'pretty'))
 
     return prelude_stock_df
 
@@ -175,7 +175,7 @@ def read_trader_file():
 
     # today = datetime.now().strftime("%m월%d일")
     today = f"{datetime.now().month}월{datetime.now().day}일"
-    # today = "3월12일"
+    # today = "4월25일"
 
     # 1. 엑셀 파일 불러오기
     file_path = f'Z:/02.펀드/019. 일간매매내역/{today} 전체.xlsx'  # 파일 경로를 적절히 수정하세요.
@@ -196,14 +196,18 @@ def read_trader_file():
     # 5. 매매구분 변환
     direction_mapping = {
         "Buy": "매수",
-        "Sell": "매도"
+        "Sell": "매도",
+        "Sell Short": "매도",
+        "Buy Cover": "매수",
+        "Short sell": "매도", 
+        'Buy cover': '매수'
     }
     df['매매구분'] = df['매매구분'].replace(direction_mapping)
 
     # 데이터프레임 저장
     trader_df = df
 
-    print(tabulate(trader_df, headers = 'keys', tablefmt = 'pretty'))
+    # print(tabulate(trader_df, headers = 'keys', tablefmt = 'pretty'))
 
     return trader_df
 

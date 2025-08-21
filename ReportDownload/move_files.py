@@ -1,6 +1,7 @@
 import os
 import shutil
 import openpyxl
+import win32com.client
 
 def move_files_with_keyword(source_dir, target_dir, keyword):
     # 소스 디렉토리 내의 모든 파일을 검색합니다.
@@ -53,6 +54,26 @@ def rpt_move(pre_source_dir, pre_dest_dir, rpt_keyword):
             print(f"총 {files_moved}개의 파일이 성공적으로 이동되었습니다.")
     except Exception as e:
         print(f"파일 복사 중 오류가 발생했습니다: {e}")
+
+
+def refresh_excel_queries(file_path):
+    try:
+        excel = win32com.client.DispatchEx("Excel.Application")
+        excel.Visible = False
+        wb = excel.Workbooks.Open(file_path)
+
+        # 모든 시트에 대해 쿼리 및 피벗 새로고침
+        wb.RefreshAll()
+
+        # 쿼리 완료까지 대기
+        excel.CalculateUntilAsyncQueriesDone()
+
+        wb.Save()
+        wb.Close(SaveChanges=True)
+        excel.Quit()
+        print(f"{file_path}의 쿼리가 성공적으로 새로고침되었습니다.")
+    except Exception as e:
+        print(f"{file_path} 쿼리 새로고침 중 오류 발생: {e}")
 
 
 def main():
@@ -147,6 +168,9 @@ def main():
     
     
     print("Files moved successfully.")
+
+    # EQSWAP.xlsx 쿼리 자동 새로고침
+    refresh_excel_queries("Z:/02.펀드/003.매매보고서 대사/PRELUDE_MTM/EQSWAP.xlsx")
 
 if __name__ == "__main__":
     main()

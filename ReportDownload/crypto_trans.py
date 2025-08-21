@@ -183,6 +183,27 @@ def volume_data_combine():
     merged_data.to_excel(output_file, index=False)
     print(f"Merged file saved as {output_file}")
 
+
+def refresh_excel_queries(file_path):
+    try:
+        excel = win32com.client.DispatchEx("Excel.Application")
+        excel.Visible = False
+        wb = excel.Workbooks.Open(file_path)
+
+        # 모든 시트에 대해 쿼리 및 피벗 새로고침
+        wb.RefreshAll()
+
+        # 쿼리 완료까지 대기
+        excel.CalculateUntilAsyncQueriesDone()
+
+        wb.Save()
+        wb.Close(SaveChanges=True)
+        excel.Quit()
+        print(f"{file_path}의 쿼리가 성공적으로 새로고침되었습니다.")
+    except Exception as e:
+        print(f"{file_path} 쿼리 새로고침 중 오류 발생: {e}")
+
+
 def main():
 
     # cryptoTransactionHistory_download()
@@ -291,6 +312,8 @@ def main():
 
     volume_data_combine()
 
+    # Ctypro Daily PnL.xlsx 쿼리 자동 새로고침
+    refresh_excel_queries("Z:/02.펀드/020. Crypto_Fund/03. Daily Trade Record/Crypto Daily PnL v2.xlsx")
 
 if __name__ == "__main__":
     main()

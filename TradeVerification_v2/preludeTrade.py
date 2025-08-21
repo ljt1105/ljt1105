@@ -29,7 +29,7 @@ def read_ms_stock_recap():
     df['펀드명'] = 'Prelude'
 
     # 7. 매매구분 값을 변환 (Buy -> 매수, Sell -> 매도)
-    df['매매구분'] = df['매매구분'].replace({'Buy': '매수', 'Sell': '매도'})
+    df['매매구분'] = df['매매구분'].replace({'Buy': '매수', 'Sell': '매도', 'Sell Short': '매도', 'Buy Cover': '매수', 'Long':'매수', 'Short':'매도'})
 
     ms_recap_stock_df = df
 
@@ -61,7 +61,7 @@ def read_oms_cfd_history():
     df['펀드명'] = 'Prelude'
 
     # 7. 매매구분 값을 변환 (Buy -> 매수, Sell -> 매도)
-    df['매매구분'] = '매수'
+    df['매매구분'] = df['매매구분'].replace({'Buy': '매수', 'Sell': '매도', 'Sell Short': '매도', 'Buy Cover': '매수', 'Short sell': '매도', 'Long':'매수', 'Short':'매도'})
 
     oms_stock_df = df
 
